@@ -15,7 +15,7 @@ void setup() {
 }
 
 void loop() {
-  // Tu código principal aquí
+  // El código principal aquí
 }
 
 void saveButtonInterrupt() {
