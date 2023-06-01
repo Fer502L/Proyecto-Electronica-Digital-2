@@ -67,6 +67,20 @@ void loop() {
   // Controlar el motor DC
   analogWrite(motorPin, motorSpeed);
 
+  // Mostrar el mensaje del motor en la pantalla LCD
+  lcd.setCursor(0, 1);
+  if (motorSpeed > 0) {
+    lcd.print("Motor: DC");
+  } else if (servo1Pos > 0) {
+    lcd.print("Motor: Servo 1");
+  } else if (servo2Pos > 0) {
+    lcd.print("Motor: Servo 2");
+  } else if (servo3Pos > 0) {
+    lcd.print("Motor: Servo 3");
+  } else {
+    lcd.print("Motor: Ninguno");
+  }
+
   // Guardar posiciones de los servos en la EEPROM si se presiona el botón de guardar
   if (saveButtonPressed) {
     saveButtonPressed = false;
