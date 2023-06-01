@@ -1,0 +1,12 @@
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Dirección de I2C de la pantalla LCD y dimensiones
+
+void setup() {
+  lcd.begin(16, 2); // Inicializar la pantalla LCD
+  lcd.print("Proyecto 2"); // Imprimir el mensaje inicial en la pantalla LCD
+}
+
+void loop() {
+  // EL código principal aquí
+}
