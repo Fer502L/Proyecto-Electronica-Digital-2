@@ -1,0 +1,27 @@
+#include <EEPROM.h>
+
+int buttonPinSave = 2;
+int buttonPinPlay = 3;
+
+volatile bool saveButtonPressed = false;
+volatile bool playButtonPressed = false;
+
+void setup() {
+  pinMode(buttonPinSave, INPUT_PULLUP);
+  pinMode(buttonPinPlay, INPUT_PULLUP);
+
+  attachInterrupt(digitalPinToInterrupt(buttonPinSave), saveButtonInterrupt, FALLING);
+  attachInterrupt(digitalPinToInterrupt(buttonPinPlay), playButtonInterrupt, FALLING);
+}
+
+void loop() {
+  // Tu código principal aquí
+}
+
+void saveButtonInterrupt() {
+  saveButtonPressed = true;
+}
+
+void playButtonInterrupt() {
+  playButtonPressed = true;
+}
