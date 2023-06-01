@@ -1,0 +1,39 @@
+#include <Servo.h>
+
+Servo servo1;
+Servo servo2;
+Servo servo3;
+
+int motorPin = 9;
+int potPin1 = A0;
+int potPin2 = A1;
+int potPin3 = A2;
+int potPin4 = A3;
+
+void setup() {
+  servo1.attach(5);
+  servo2.attach(6);
+  servo3.attach(7);
+
+  pinMode(motorPin, OUTPUT);
+}
+
+void loop() {
+  int potValue1 = analogRead(potPin1);
+  int potValue2 = analogRead(potPin2);
+  int potValue3 = analogRead(potPin3);
+  int potValue4 = analogRead(potPin4);
+
+  int servo1Pos = map(potValue1, 0, 1023, 0, 180);
+  int servo2Pos = map(potValue2, 0, 1023, 0, 180);
+  int servo3Pos = map(potValue3, 0, 1023, 0, 180);
+  int motorSpeed = map(potValue4, 0, 1023, 0, 255);
+
+  servo1.write(servo1Pos);
+  servo2.write(servo2Pos);
+  servo3.write(servo3Pos);
+
+  analogWrite(motorPin, motorSpeed);
+
+  delay(10);
+}
