@@ -1,0 +1,104 @@
+#include <EEPROM.h>
+#include <Servo.h>
+#include <LiquidCrystal_I2C.h>
+
+Servo servo1;
+Servo servo2;
+Servo servo3;
+
+int motorPin = 9;
+int potPin1 = A0;
+int potPin2 = A1;
+int potPin3 = A2;
+int potPin4 = A3;
+
+int buttonPinSave = 2;
+int buttonPinPlay = 3;
+
+volatile bool saveButtonPressed = false;
+volatile bool playButtonPressed = false;
+volatile int motorSpeed = 0;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Dirección de I2C de la pantalla LCD y dimensiones
+
+void setup() {
+  servo1.attach(5);
+  servo2.attach(6);
+  servo3.attach(7);
+
+  pinMode(motorPin, OUTPUT);
+
+  pinMode(buttonPinSave, INPUT_PULLUP);
+  pinMode(buttonPinPlay, INPUT_PULLUP);
+
+  attachInterrupt(digitalPinToInterrupt(buttonPinSave), saveButtonInterrupt, FALLING);
+  attachInterrupt(digitalPinToInterrupt(buttonPinPlay), playButtonInterrupt, FALLING);
+
+  lcd.begin(16, 2); // Inicializar la pantalla LCD
+  lcd.print("Proyecto 2"); // Imprimir el mensaje inicial en la pantalla LCD
+
+  // Configurar Timer1 para el control del motor DC
+  TCCR1A = 0;
+  TCCR1B = 0;
+  TCNT1 = 0;
+  OCR1A = 0;
+  TCCR1B |= (1 << WGM12) | (1 << CS11); // Configuración CTC modo y prescaler de 8
+  TIMSK1 |= (1 << OCIE1A); // Habilitar interrupción para comparar igualdad de OCR1A
+}
+
+void loop() {
+  // Leer valores de los potenciómetros
+  int potValue1 = analogRead(potPin1);
+  int potValue2 = analogRead(potPin2);
+  int potValue3 = analogRead(potPin3);
+  int potValue4 = analogRead(potPin4);
+
+  // Mapear los valores de los potenciómetros a los rangos de los servos y el motor DC
+  int servo1Pos = map(potValue1, 0, 1023, 0, 180);
+  int servo2Pos = map(potValue2, 0, 1023, 0, 180);
+  int servo3Pos = map(potValue3, 0, 1023, 0, 180);
+  motorSpeed = map(potValue4, 0, 1023, 0, 255);
+
+  // Mover los servos a las posiciones correspondientes
+  servo1.write(servo1Pos);
+  servo2.write(servo2Pos);
+  servo3.write(servo3Pos);
+
+  // Controlar el motor DC
+  analogWrite(motorPin, motorSpeed);
+
+  // Guardar posiciones de los servos en la EEPROM si se presiona el botón de guardar
+  if (saveButtonPressed) {
+    saveButtonPressed = false;
+    EEPROM.write(0, servo1Pos);
+    EEPROM.write(1, servo2Pos);
+    EEPROM.write(2, servo3Pos);
+  }
+
+  // Reproducir posiciones de los servos desde la EEPROM si se presiona el botón de reproducir
+  if (playButtonPressed) {
+    playButtonPressed = false;
+    int savedServo1Pos = EEPROM.read(0);
+    int savedServo2Pos = EEPROM.read(1);
+    int savedServo3Pos = EEPROM.read(2);
+
+    servo1.write(savedServo1Pos);
+    servo2.write(savedServo2Pos);
+    servo3.write(savedServo3Pos);
+  }
+
+  delay(10);
+}
+
+void saveButtonInterrupt() {
+  saveButtonPressed = true;
+}
+
+void playButtonInterrupt() {
+  playButtonPressed = true;
+}
+
+ISR(TIMER1_COMPA_vect) {
+  // Interrupción para el Timer1 del motor DC
+  analogWrite(motorPin, motorSpeed);
+}
