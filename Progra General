@@ -81,3 +81,10 @@ void loop() {
   // Espera un breve periodo de tiempo antes de la siguiente iteración
   delay(15);
 }
+
+// Función para guardar las posiciones de los servos en la EEPROM
+void saveServoPositions() {
+  EEPROM.update(0, servoPos1);
+  EEPROM.update(1, servoPos2);
+  EEPROM.update(2, servoPos3);
+}
