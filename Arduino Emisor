@@ -1,0 +1,26 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(10, 11); // Configura los pines para la comunicación serial
+
+const int buttonPin1 = 2; // Pin del primer botón
+const int buttonPin2 = 3; // Pin del segundo botón
+
+void setup() {
+  Serial.begin(9600); // Inicializa el puerto serial del Arduino emisor
+  mySerial.begin(9600); // Inicializa la comunicación serial con el Arduino receptor
+
+  pinMode(buttonPin1, INPUT_PULLUP); // Configura el pin del primer botón como entrada con resistencia pull-up
+  pinMode(buttonPin2, INPUT_PULLUP); // Configura el pin del segundo botón como entrada con resistencia pull-up
+}
+
+void loop() {
+  int buttonState1 = digitalRead(buttonPin1); // Lee el estado del primer botón
+  int buttonState2 = digitalRead(buttonPin2); // Lee el estado del segundo botón
+
+  // Envía los estados de los botones al Arduino receptor a través de la comunicación serial
+  mySerial.print(buttonState1);
+  mySerial.print(",");
+  mySerial.println(buttonState2);
+
+  delay(100); // Pequeña pausa entre envíos de datos
+}
