@@ -1,1 +1,17 @@
+#include <Servo.h>
+#include <EEPROM.h>
 
+// Define los pines de los potenciómetros
+const int potPin1 = A0;
+const int potPin2 = A1;
+const int potPin3 = A2;
+
+// Define los pines de los servomotores
+const int servoPin1 = 9;
+const int servoPin2 = 10;
+const int servoPin3 = 11;
+
+// Define los pines de los botones
+const int saveButtonPin = 2;
+const int loadButtonPin = 3;
+const int toggleButtonPin = 4;
