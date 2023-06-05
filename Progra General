@@ -25,3 +25,6 @@ Servo servo3;
 int servoPos1 = 0;
 int servoPos2 = 0;
 int servoPos3 = 0;
+
+// Variable para almacenar el estado de la lectura de los potenciómetros
+bool potentiometersEnabled = true;
