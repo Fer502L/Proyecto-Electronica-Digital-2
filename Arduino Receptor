@@ -1,0 +1,49 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(10, 11); // Configura los pines para la comunicación serial
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Dirección de la pantalla LCD I2C y número de columnas y filas
+
+const int motorPin1 = 9; // Pin para controlar la dirección del motor (sentido 1)
+const int motorPin2 = 10; // Pin para controlar la dirección del motor (sentido 2)
+
+void setup() {
+  Serial.begin(9600); // Inicializa el puerto serial del Arduino
+  mySerial.begin(9600); // Inicializa la comunicación serial con el Arduino transmisor
+  lcd.begin(16, 2); // Inicializa la pantalla LCD
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+}
+
+void loop() {
+  if (mySerial.available() > 0) { // Verifica si hay datos disponibles
+    // Lee los estados de los botones recibidos a través de la comunicación serial
+    int buttonState1 = mySerial.parseInt();
+    mySerial.read(); // Lee el caracter ',' que separa los valores
+    int buttonState2 = mySerial.parseInt();
+
+    // Modifica la dirección del motor según los estados de los botones
+    if (buttonState1 == LOW) {
+      digitalWrite(motorPin1, HIGH);
+      digitalWrite(motorPin2, LOW);
+    } else if (buttonState2 == LOW) {
+      digitalWrite(motorPin1, LOW);
+      digitalWrite(motorPin2, HIGH);
+    } else {
+      digitalWrite(motorPin1, LOW);
+      digitalWrite(motorPin2, LOW);
+    }
+
+    // Muestra el estado de los botones en la pantalla LCD
+    lcd.setCursor(0, 0);
+    lcd.print("Boton 1: ");
+    lcd.print(buttonState1);
+    lcd.setCursor(0, 1);
+    lcd.print("Boton 2: ");
+    lcd.print(buttonState2);
+
+    delay(100); // Pequeña pausa entre lecturas
+  }
+}
+
