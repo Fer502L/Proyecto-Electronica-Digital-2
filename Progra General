@@ -20,3 +20,8 @@ const int toggleButtonPin = 4;
 Servo servo1;
 Servo servo2;
 Servo servo3;
+
+// Variables para almacenar las posiciones de los servos
+int servoPos1 = 0;
+int servoPos2 = 0;
+int servoPos3 = 0;
