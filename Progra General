@@ -53,3 +53,31 @@ void loop() {
     loadServoPositions();
     delay(200);  // Retardo para evitar múltiples lecturas mientras se mantiene presionado el botón
   }
+
+ // Activar o desactivar la lectura de los potenciómetros
+  if (digitalRead(toggleButtonPin) == LOW) {
+    potentiometersEnabled = !potentiometersEnabled;
+    delay(200);  // Retardo para evitar múltiples cambios mientras se mantiene presionado el botón
+  }
+
+  // Leer los valores de los potenciómetros solo si la lectura está activada
+  if (potentiometersEnabled) {
+    // Lee los valores de los potenciómetros
+    int potValue1 = analogRead(potPin1);
+    int potValue2 = analogRead(potPin2);
+    int potValue3 = analogRead(potPin3);
+
+    // Mapea los valores de los potenciómetros al rango adecuado para los servomotores (0-180)
+    servoPos1 = map(potValue1, 0, 1023, 0, 180);
+    servoPos2 = map(potValue2, 0, 1023, 0, 180);
+    servoPos3 = map(potValue3, 0, 1023, 0, 180);
+  }
+
+  // Mueve los servomotores a las posiciones correspondientes
+  servo1.write(servoPos1);
+  servo2.write(servoPos2);
+  servo3.write(servoPos3);
+
+  // Espera un breve periodo de tiempo antes de la siguiente iteración
+  delay(15);
+}
