@@ -1,3 +1,7 @@
+//Arduino 1
+//Motores
+// By: Deyler Ruiz Toledo y Fer
+
 #include <Servo.h>
 #include <EEPROM.h>
 
