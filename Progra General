@@ -40,3 +40,16 @@ void setup() {
   pinMode(loadButtonPin, INPUT_PULLUP);
   pinMode(toggleButtonPin, INPUT_PULLUP);
 }
+
+void loop() {
+  // Guardar posiciones de los servos en la EEPROM
+  if (digitalRead(saveButtonPin) == LOW) {
+    saveServoPositions();
+    delay(200);  // Retardo para evitar múltiples escrituras mientras se mantiene presionado el botón
+  }
+
+  // Leer posiciones de los servos desde la EEPROM y reproducirlas
+  if (digitalRead(loadButtonPin) == LOW) {
+    loadServoPositions();
+    delay(200);  // Retardo para evitar múltiples lecturas mientras se mantiene presionado el botón
+  }
