@@ -88,3 +88,10 @@ void saveServoPositions() {
   EEPROM.update(1, servoPos2);
   EEPROM.update(2, servoPos3);
 }
+
+// Función para leer las posiciones de los servos desde la EEPROM
+void loadServoPositions() {
+  servoPos1 = EEPROM.read(0);
+  servoPos2 = EEPROM.read(1);
+  servoPos3 = EEPROM.read(2);
+}
