@@ -28,3 +28,15 @@ int servoPos3 = 0;
 
 // Variable para almacenar el estado de la lectura de los potenciómetros
 bool potentiometersEnabled = true;
+
+void setup() {
+  // Inicializa los servomotores
+  servo1.attach(servoPin1);
+  servo2.attach(servoPin2);
+  servo3.attach(servoPin3);
+
+  // Configura los pines de los botones como entrada con resistencias de pull-up
+  pinMode(saveButtonPin, INPUT_PULLUP);
+  pinMode(loadButtonPin, INPUT_PULLUP);
+  pinMode(toggleButtonPin, INPUT_PULLUP);
+}
